@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import { InputText } from './components/InputText.js';
-import { MessageList } from './components/MessageList.js';
-import styles from './assets/style.module.sass';
+import styles from './assets/style.module.sass'
+import { InputText, MessageList, ChatRooms } from './components'
+import { useState, useEffect } from 'react'
+import { Grid } from '@material-ui/core';
 
 export const App = () => {
   const [messageList, setMessageList] = useState([]);
 
-  function handleMsgChange({author, text}) {
+  const handleMsgChange = ({author, text}) => {
     if(!author) author = 'anonim';
     setMessageList((messageList) => [...messageList, {author, text}]);
   };
@@ -25,9 +25,18 @@ export const App = () => {
   }, [messageList])
 
   return (
-    <div className={styles.app}>
+    <Grid container spacing={3}>
+      <Grid item xs={6}>
+      <div className={styles.app}>
+        <ChatRooms styles={styles} chats={} />        
+    </div>
+      </Grid>
+      <Grid item xs={6}>
+      <div className={styles.app}>
         <MessageList styles={styles} messageList={messageList} />        
         <InputText styles={styles} onMessageChange={handleMsgChange}/>
     </div>
+      </Grid>
+    </Grid>
   );
 }
