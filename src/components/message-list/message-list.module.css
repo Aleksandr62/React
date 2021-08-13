@@ -1,0 +1,11 @@
+.messageBox {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  width: 100%;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+}
