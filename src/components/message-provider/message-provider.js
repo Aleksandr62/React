@@ -50,19 +50,18 @@ export const MessageProvider = ({ children }) => {
         updateConversations(target.value);
       },
       roomDelete: (conversation) => {
-        const newConversations = [...conversations];
-        const newMessages = { ...messages };
-        delete newMessages[conversation];
-
-        newConversations.splice(
-          conversations.findIndex((room) => room.title === conversation),
-          1
-        );
         setConversations(() => {
-          return [...newConversations];
+          return [
+            ...conversations.filter((room) => room.title !== conversation)
+          ];
         });
         setMessages(() => {
-          return { ...newMessages };
+          return {
+            ...Object.entries(messages).reduce((acc, [key, value]) => {
+              if (key !== conversation) acc[key] = value;
+              return acc;
+            }, {})
+          };
         });
       },
       addRoom: (conversation) => {

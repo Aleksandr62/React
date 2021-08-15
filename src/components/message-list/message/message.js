@@ -1,9 +1,9 @@
 import classNames from "classnames";
 import styles from "./message.module.css";
 
-export const Message = ({ message }) => {
-  const date = new Date();
+const date = new Date();
 
+export const Message = ({ message }) => {
   return (
     <div data-bot={message.author === "Bot"} className={styles.messageGroup}>
       <div className={styles.author}>{message.author}:</div>
