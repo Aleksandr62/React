@@ -1,0 +1,40 @@
+.messageGroup {
+  align-self: flex-end;
+  width: fit-content;
+  text-align: right;
+}
+
+.messageGroup[data-bot="true"] {
+  align-self: start;
+  width: fit-content;
+  text-align: left;
+}
+.message {
+  align-self: flex-end;
+  padding: 10px;
+  margin: 5px;
+  width: 200px;
+  border-radius: 5px;
+  text-align: left;
+  background: #ebebeb;
+}
+
+.message[data-bot="true"] {
+  align-self: start;
+  padding: 10px;
+  margin: 5px;
+  width: 200px;
+  border-radius: 5px;
+  text-align: left;
+  background: #d7facd;
+}
+
+.author {
+  margin: 0;
+}
+
+.date {
+  margin: 0;
+  font-size: 0.8rem;
+  text-align: right;
+}

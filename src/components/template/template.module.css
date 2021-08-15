@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  background-color: #17212b;
+}
+
+.leftSideBar {
+  height: 100vh;
+  min-width: fit-content;
+  max-width: 20vw;
+}
+
+.content {
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden;
+}

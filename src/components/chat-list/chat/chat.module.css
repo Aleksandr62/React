@@ -1,0 +1,9 @@
+.room {
+  width: 100%;
+}
+
+.info {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+}

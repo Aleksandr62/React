@@ -1,0 +1,14 @@
+.profileBox {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+.inputName {
+  margin-bottom: 14px;
+}
+
+.saveButton {
+  margin-top: 14px;
+}
