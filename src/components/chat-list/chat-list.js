@@ -59,8 +59,8 @@ export const ChatList = ({ conversations, messages, roomDelete, addRoom }) => {
           const lastMessage = [...messages[room.title]].pop() || "";
 
           return (
-            <div className={styles.chatList}>
-              <Link key={room.title} to={`/chat/${room.title}`}>
+            <div key={room.title} className={styles.chatList}>
+              <Link to={`/chat/${room.title}`}>
                 <Chat
                   title={room.title}
                   selected={room.title === roomId}

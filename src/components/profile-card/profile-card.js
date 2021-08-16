@@ -4,7 +4,7 @@ import { Save } from "@material-ui/icons";
 import styles from "./profile-card.module.css";
 
 export const ProfileCard = ({ firstName, lastName, birthday, updateUser }) => {
-  const [newUser, setNewUser] = useState({
+  const [userFormValue, setUserFormValue] = useState({
     firstName,
     lastName,
     birthday
@@ -12,7 +12,7 @@ export const ProfileCard = ({ firstName, lastName, birthday, updateUser }) => {
 
   const handleUpdateUser = ({ target }) => {
     const { name, value } = target;
-    setNewUser((state) => {
+    setUserFormValue((state) => {
       return { ...state, [name]: value };
     });
   };
@@ -22,14 +22,14 @@ export const ProfileCard = ({ firstName, lastName, birthday, updateUser }) => {
       <h2>Profile</h2>
       <Input
         className={styles.inputName}
-        value={newUser.lastName}
+        value={userFormValue.lastName}
         onChange={handleUpdateUser}
         name="lastName"
         placeholder="Фамилия..."
       />
       <Input
         className={styles.inputName}
-        value={newUser.firstName}
+        value={userFormValue.firstName}
         onChange={handleUpdateUser}
         name="firstName"
         placeholder="Имя..."
@@ -39,7 +39,7 @@ export const ProfileCard = ({ firstName, lastName, birthday, updateUser }) => {
         label="День рождения"
         type="date"
         className={styles.inputName}
-        value={newUser.birthday}
+        value={userFormValue.birthday}
         onChange={handleUpdateUser}
         InputLabelProps={{
           shrink: true
@@ -49,7 +49,7 @@ export const ProfileCard = ({ firstName, lastName, birthday, updateUser }) => {
         className={styles.saveButton}
         variant="outlined"
         size="small"
-        onClick={() => updateUser({ ...newUser })}
+        onClick={() => updateUser({ ...userFormValue })}
         startIcon={<Save />}
       >
         Сохранить
