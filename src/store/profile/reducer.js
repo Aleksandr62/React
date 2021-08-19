@@ -5,8 +5,8 @@ const initialState = {
     id: 1,
     firstName: "Vasya",
     lastName: "Ivanov",
-    birthday: "2001-10-01"
-  }
+    birthday: "2001-10-01",
+  },
 };
 
 export const profileReducer = (state = initialState, action) => {
@@ -14,7 +14,7 @@ export const profileReducer = (state = initialState, action) => {
     case UPDATE_USER:
       return {
         ...state,
-        user: action.payload
+        user: action.payload.user,
       };
     default:
       return state;
