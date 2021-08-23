@@ -1,11 +1,25 @@
+.messageBoxWrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 80vh;
+  padding: 10px;
+}
+
 .messageBox {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
   width: 100%;
+
+  overflow-y: auto;
 }
 
 .messages {
   display: flex;
   flex-direction: column;
+}
+
+.sendButton {
+  cursor: pointer;
 }

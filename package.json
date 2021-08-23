@@ -1,5 +1,5 @@
 {
-  "name": "les-5",
+  "name": "les-7-work",
   "version": "1.0.0",
   "description": "",
   "keywords": [],
@@ -14,7 +14,9 @@
     "react-redux": "7.2.4",
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.0",
-    "redux": "4.1.1"
+    "redux": "4.1.1",
+    "redux-persist": "6.0.0",
+    "redux-thunk": "2.3.0"
   },
   "devDependencies": {
     "@babel/runtime": "7.13.8",

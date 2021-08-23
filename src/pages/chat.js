@@ -1,13 +1,8 @@
 import { useEffect } from "react";
-import { Switch, Route, useHistory, Redirect } from "react-router-dom";
-import {
-  MessageProvider,
-  Template,
-  ChatList,
-  MessageList
-} from "../components";
+import { Switch, Route, useHistory } from "react-router-dom";
+import { Template, ChatList, MessageList } from "../components";
 
-export function Chat() {
+export const Chat = () => {
   const { push } = useHistory();
 
   useEffect(() => {
@@ -16,9 +11,7 @@ export function Chat() {
         push("/chat");
       }
     };
-
     document.addEventListener("keydown", listenExistChat);
-
     return () => {
       document.removeEventListener("keydown", listenExistChat);
     };
@@ -27,28 +20,15 @@ export function Chat() {
   return (
     <Switch>
       <Route path={["/chat/:roomId", "/chat"]}>
-        {
-          <MessageProvider>
-            {([state, actions]) => (
-              <Template leftSideBar={<ChatList {...state} {...actions} />}>
-                {state.hasRoomById ? (
-                  <Route path="/chat/:roomId">
-                    <MessageList {...state} {...actions} />
-                  </Route>
-                ) : (
-                  <Redirect to="/chat" />
-                )}
-                <Route exact={true} path="/chat">
-                  <h3>Выберите чат</h3>
-                </Route>
-              </Template>
-            )}
-          </MessageProvider>
-        }
-      </Route>
-      <Route path="*">
-        <h1>Такого чата нет</h1>
+        <Template leftSideBar={<ChatList />}>
+          <Route path="/chat/:roomId">
+            <MessageList />
+          </Route>
+          <Route exact={true} path="/chat">
+            <h3>Выберите чат</h3>
+          </Route>
+        </Template>
       </Route>
     </Switch>
   );
-}
+};

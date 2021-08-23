@@ -1,21 +1,25 @@
-import classNames from "classnames";
 import styles from "./message.module.css";
 
-const date = new Date();
-
-export const Message = ({ message }) => {
+export const Message = ({ message, handleMessageDelete }) => {
   return (
     <div data-bot={message.author === "Bot"} className={styles.messageGroup}>
       <div className={styles.author}>{message.author}:</div>
       <div data-bot={message.author === "Bot"} className={styles.message}>
         <p className={styles.text}>{message.message}</p>
         <p className={styles.date}>
-          {date.toLocaleDateString("ru-RU", {
+          {message.date.toLocaleDateString("ru-RU", {
             hour: "2-digit",
             minute: "2-digit",
             day: "2-digit",
             month: "2-digit"
           })}
+        </p>
+        <p
+          data-message-id={message.id}
+          className={styles.close}
+          onClick={handleMessageDelete}
+        >
+          x
         </p>
       </div>
     </div>
