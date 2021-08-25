@@ -1,9 +1,31 @@
+.menu {
+  display: flex;
+}
+
 .selected {
   background-color: #17212bb4;
   color: white;
 }
 
+.button {
+  text-transform: uppercase;
+}
+
 .button:hover {
   color: white;
   background-color: #17212b;
+}
+
+.spacer {
+  flex-grow: 1;
+  display: flex;
+}
+
+.selector:before {
+  content: "light";
+  font-size: 1rem;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.00938em;
 }

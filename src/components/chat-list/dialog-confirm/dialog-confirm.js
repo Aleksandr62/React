@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import {
   Button,
   TextField,
@@ -8,23 +8,23 @@ import {
   DialogTitle
 } from "@material-ui/core";
 
-export const DialogConfirm = ({ rooms, open, close, handleAddRoom }) => {
+export const DialogConfirm = ({ chats, open, close, handleAddRoom }) => {
   const [room, setRoom] = useState("");
 
-  const isExistRoom = useMemo(() => {
-    return rooms.find((item) => {
-      return item.title === room;
-    });
-  });
+  const isExistRoom = () => !room || chats.find((item) => item.title === room);
 
   const handleConfirm = () => {
     handleAddRoom(room);
-    setRoom((room) => "");
+    setRoom((state) => "");
     close();
   };
 
   const handleChangeRoom = ({ target }) => {
-    setRoom((room) => target.value);
+    setRoom((state) => target.value);
+  };
+
+  const handlePressEnter = ({ code }) => {
+    if (code.match("Enter") && !isExistRoom()) handleConfirm();
   };
 
   return (
@@ -38,6 +38,7 @@ export const DialogConfirm = ({ rooms, open, close, handleAddRoom }) => {
           onChange={handleChangeRoom}
           label="Название комнаты"
           type="text"
+          onKeyPress={handlePressEnter}
           fullWidth
         />
       </DialogContent>
@@ -49,7 +50,7 @@ export const DialogConfirm = ({ rooms, open, close, handleAddRoom }) => {
           onClick={handleConfirm}
           variant="outlined"
           color="primary"
-          disabled={isExistRoom || !room}
+          disabled={isExistRoom()}
         >
           создать
         </Button>

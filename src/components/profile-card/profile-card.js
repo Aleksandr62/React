@@ -12,9 +12,7 @@ export const ProfileCard = ({ firstName, lastName, birthday, updateUser }) => {
 
   const handleUpdateUser = ({ target }) => {
     const { name, value } = target;
-    setUserFormValue((state) => {
-      return { ...state, [name]: value };
-    });
+    setUserFormValue((state) => ({ ...state, [name]: value }));
   };
 
   return (
