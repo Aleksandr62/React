@@ -1,8 +1,13 @@
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import { logger } from "./middlewares";
 import { profileReducer } from "./profile";
+import { conversationsReducer } from "./conversations";
+import { messagesReducer } from "./messages";
 
-export const store = createStore(
-  combineReducers({
-    profile: profileReducer
-  })
-);
+const combineStore = combineReducers({
+  profile: profileReducer,
+  conversations: conversationsReducer,
+  messages: messagesReducer
+});
+
+export const store = createStore(combineStore, applyMiddleware(logger));

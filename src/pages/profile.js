@@ -3,9 +3,7 @@ import { Template, ProfileMenu, ProfileCard } from "../components";
 import { updateUser } from "../store/profile";
 
 export const Profile = () => {
-  const user = useSelector((state) => {
-    return state.profile.user;
-  });
+  const user = useSelector((state) => state.profile.user);
   const dispatch = useDispatch();
 
   const updateUserData = (newUser) => {
