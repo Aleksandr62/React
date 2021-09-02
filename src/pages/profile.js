@@ -1,18 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
-import { Template, ProfileMenu, ProfileCard } from "../components";
-import { updateUser } from "../store/profile";
+import { Template, Header, LeftBarProfile, ProfileCard } from "../components";
 
 export const Profile = () => {
-  const user = useSelector((state) => state.profile.user);
-  const dispatch = useDispatch();
-
-  const updateUserData = (newUser) => {
-    dispatch(updateUser(newUser));
-  };
-
   return (
-    <Template leftSideBar={<ProfileMenu {...user} />}>
-      <ProfileCard {...user} updateUser={updateUserData} />
+    <Template header={<Header />} leftSideBar={<LeftBarProfile />}>
+      <ProfileCard />
     </Template>
   );
 };

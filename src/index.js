@@ -1,31 +1,58 @@
-/* import { ThemeProvider } from "@material-ui/core"; */
-import { StrictMode } from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { StrictMode, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-import { Chat, Profile, PageNone, Home } from "./pages";
-import { Menu } from "./components";
-import styles from "./styles.module.css";
-/* import { Themes } from "./themes"; */
+import { BrowserRouter } from "react-router-dom";
+import { Provider, useDispatch } from "react-redux";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { conversationsDb, messagesDb } from "./api";
+import { fetchConversations } from "./store/conversations";
+import { fetchMessages } from "./store/messages";
+import { profileAdded, profileClear } from "./store/profile";
 import { store } from "./store";
+import { MainRouter } from "./router";
+import styles from "./app.module.css";
+
+const App = () => {
+  const auth = getAuth();
+
+  const dispatch = useDispatch();
+
+  useEffect(() =>
+    onAuthStateChanged(auth, (user) => {
+      const userProfile = {
+        id: user?.uid,
+        email: user?.email,
+        firstName: user?.displayName,
+        lastName: user?.email,
+        created_at: user?.metadata.createdAt,
+        updated_at: user?.reloadUserInfo.lastRefreshAt
+      };
+
+      if (user) {
+        dispatch(profileAdded(userProfile));
+        conversationsDb
+          .get()
+          .then((resp) => dispatch(fetchConversations(resp)));
+        messagesDb.get().then((resp) => dispatch(fetchMessages(resp)));
+      } else {
+        dispatch(profileClear());
+      }
+    })
+  );
+
+  return (
+    <BrowserRouter>
+      <MainRouter className={styles.app} />
+    </BrowserRouter>
+  );
+};
+
+const root = document.getElementById("root");
 
 ReactDOM.render(
   <StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        {/*         <ThemeProvider theme={Themes}> */}
-        <header className={styles.header}>
-          <Menu />
-        </header>
-        <Switch>
-          <Route path="/chat" component={() => <Chat />} />
-          <Route path="/profile" component={() => <Profile />} />
-          <Route exact path="/" component={() => <Home />} />
-          <Route path="*" component={() => <PageNone />} />
-        </Switch>
-        {/*         </ThemeProvider> */}
-      </BrowserRouter>
+      <App />
     </Provider>
   </StrictMode>,
-  document.getElementById("root")
+  root
 );

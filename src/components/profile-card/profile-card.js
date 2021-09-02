@@ -1,59 +1,43 @@
-import { Input, TextField, Button } from "@material-ui/core";
-import { useState } from "react";
-import { Save } from "@material-ui/icons";
-import styles from "./profile-card.module.css";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { TextField, Button } from "@material-ui/core";
+import { profileUpdated } from "../../store/profile";
+import { updateProfileApp } from "../../api";
+import styles from "./profile.module.css";
 
-export const ProfileCard = ({ firstName, lastName, birthday, updateUser }) => {
-  const [userFormValue, setUserFormValue] = useState({
-    firstName,
-    lastName,
-    birthday
-  });
+export const ProfileCard = () => {
+  const { user } = useSelector((state) => state.user);
 
-  const handleUpdateUser = ({ target }) => {
-    const { name, value } = target;
-    setUserFormValue((state) => {
-      return { ...state, [name]: value };
-    });
+  const [firstName, setFirstName] = useState(user.firstName);
+  const [email, setEmail] = useState(user.email);
+
+  const dispatch = useDispatch();
+
+  const handleUserUpdate = () => {
+    dispatch(profileUpdated({ firstName }));
   };
 
+  useEffect(() => {
+    updateProfileApp(firstName);
+  });
+
   return (
-    <form noValidate className={styles.profileBox}>
-      <h2>Profile</h2>
-      <Input
-        className={styles.inputName}
-        value={userFormValue.lastName}
-        onChange={handleUpdateUser}
-        name="lastName"
-        placeholder="Фамилия..."
-      />
-      <Input
-        className={styles.inputName}
-        value={userFormValue.firstName}
-        onChange={handleUpdateUser}
-        name="firstName"
-        placeholder="Имя..."
+    <div className={styles.profile}>
+      <TextField
+        className={styles.field}
+        autoFocus
+        value={firstName}
+        label="First name:"
+        onChange={(e) => setFirstName(e.target.value)}
       />
       <TextField
-        name="birthday"
-        label="День рождения"
-        type="date"
-        className={styles.inputName}
-        value={userFormValue.birthday}
-        onChange={handleUpdateUser}
-        InputLabelProps={{
-          shrink: true
-        }}
+        className={styles.field}
+        value={email}
+        disabled
+        label="Email:"
+        onChange={(e) => setEmail(e.target.value)}
       />
-      <Button
-        className={styles.saveButton}
-        variant="outlined"
-        size="small"
-        onClick={() => updateUser({ ...userFormValue })}
-        startIcon={<Save />}
-      >
-        Сохранить
-      </Button>
-    </form>
+      <Button onClick={handleUserUpdate}>Сохранить</Button>
+    </div>
   );
 };

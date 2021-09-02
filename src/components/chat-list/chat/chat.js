@@ -1,32 +1,26 @@
-import {
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  IconButton
-} from "@material-ui/core";
-import { AccountCircle, DeleteForeverOutlined } from "@material-ui/icons";
+import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
+import { AccountCircle } from "@material-ui/icons";
+import { Link } from "react-router-dom";
 import styles from "./chat.module.css";
 
-export const Chat = ({ title, selected, lastMessage, roomDelete }) => {
-  const handleClickDelete = (e) => {
-    e.preventDefault();
-    roomDelete(title);
-  };
-
+export const Chat = ({ chat, lastMessage, selected }) => {
   return (
-    <ListItem divider dense selected={selected} className={styles.room}>
-      <ListItemIcon>
-        <AccountCircle />
-      </ListItemIcon>
-      <div className={styles.info}>
+    <Link to={`/chat/${chat.id}`}>
+      <ListItem button selected={selected}>
+        <ListItemIcon>
+          <AccountCircle />
+        </ListItemIcon>
         <ListItemText
-          primary={title}
-          secondary={`${lastMessage.author}: ${lastMessage.message}`}
+          primary={chat.title}
+          secondary={
+            lastMessage && (
+              <div className={styles.lastMessage}>
+                {lastMessage.author}:<i>{lastMessage.text}</i>
+              </div>
+            )
+          }
         />
-        <IconButton aria-label="delete" edge="end" onClick={handleClickDelete}>
-          <DeleteForeverOutlined fontSize="small" />
-        </IconButton>
-      </div>
-    </ListItem>
+      </ListItem>
+    </Link>
   );
 };

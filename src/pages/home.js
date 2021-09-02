@@ -1,7 +1,9 @@
+import { Template, Header, LeftBarHome } from "../components";
+
 export const Home = () => {
   return (
-    <div>
-      <h1>Главная</h1>
-    </div>
+    <Template header={<Header />} leftSideBar={<LeftBarHome />}>
+      <h2>Home</h2>
+    </Template>
   );
 };
