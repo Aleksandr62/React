@@ -1,0 +1,9 @@
+.profile {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  line-height: 3rem;
+}
+.field {
+  margin-bottom: 14px;
+}

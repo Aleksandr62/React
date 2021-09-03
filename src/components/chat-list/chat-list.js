@@ -1,116 +1,83 @@
-import { useCallback, useState, memo } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
-import { List, Fab } from "@material-ui/core";
-import { makeStyles, createStyles } from "@material-ui/core/styles";
-import { ChatOutlined } from "@material-ui/icons";
 import {
-  addConversation,
-  deleteConversation
-} from "../../store/conversations/actions";
+  List,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  Input,
+  DialogActions
+} from "@material-ui/core";
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import {
-  addConversationToMessages,
-  deleteChatMessage
-} from "../../store/messages/actions";
-import { DialogConfirm } from "./dialog-confirm";
+  conversationAdded,
+  selectAllConversations
+} from "../../store/conversations";
+import { selectAllMessages } from "../../store/messages";
 import { Chat } from "./chat";
 import styles from "./chat-list.module.css";
 
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    root: {
-      position: "relative",
-      width: "100%",
-      minWidth: "200px",
-      minHeight: "60px"
-    },
-    fab: {
-      position: "absolute",
-      color: theme.palette.primary.main,
-      backgroundColor: theme.palette.secondary.main,
-      zIndex: 10,
-      bottom: theme.spacing(-1.5),
-      right: theme.spacing(2)
-    }
-  })
-);
+export const ChatList = () => {
+  const { chatId } = useParams();
 
-const selector = (state) => state.conversations.conversations;
+  const conversations = useSelector(selectAllConversations);
+  const allMessages = useSelector(selectAllMessages);
 
-export const ChatList = memo(() => {
-  const { roomId } = useParams();
-  const classes = useStyles();
-
-  const conversations = useSelector(selector);
-  const messages = useSelector(
-    (state) => state.messages.messages[roomId] || []
-  );
+  const [dialogShow, setDialogShow] = useState(false);
+  const [title, setTitle] = useState("");
 
   const dispatch = useDispatch();
-
-  const [open, setOpen] = useState(false);
-
-  const handleAddRoom = useCallback(
-    (room = "") => {
-      dispatch(addConversation({ title: room, value: "" }));
-      dispatch(addConversationToMessages({ title: room }));
-    },
-    [dispatch]
-  );
-
-  const handleDeleteRoom = useCallback(
-    (roomTitle) => {
-      dispatch(deleteConversation({ title: roomTitle }));
-      dispatch(deleteChatMessage({ title: roomTitle }));
-    },
-    [dispatch]
-  );
-
-  const handleClose = () => {
-    setOpen((open) => (open = false));
+  const handleAddChat = () => {
+    const date = new Date();
+    dispatch(conversationAdded({ id: date.getTime(), title, value: "" }));
+    setTitle("");
+    setDialogShow(false);
   };
 
   return (
-    <div className={classes.root}>
-      <Fab
-        aria-label="add"
-        size="small"
-        className={classes.fab}
-        onClick={() => setOpen((open) => (open = true))}
+    <>
+      <Button fullWidth onClick={() => setDialogShow(true)} variant="outlined">
+        Add Chat
+      </Button>
+      <Dialog
+        className={styles.dialog}
+        open={dialogShow}
+        onClose={() => setDialogShow(false)}
       >
-        <ChatOutlined fontSize="small" />
-      </Fab>
-      <DialogConfirm
-        chats={conversations}
-        open={open}
-        close={handleClose}
-        handleAddRoom={handleAddRoom}
-      />
-      <div>
-        <List component="nav">
-          {conversations.map((room, idx) => {
-            const lastMessage = messages[messages?.length - 1] || {
-              author: "",
-              message: "Нет сообщений"
-            };
+        <DialogTitle>Add chat</DialogTitle>
+        <DialogContent>
+          <Input
+            placeholder="Title chat..."
+            fullWidth
+            autoFocus
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button fullWidth onClick={handleAddChat} variant="outlined">
+            Add chat
+          </Button>
+        </DialogActions>
+      </Dialog>
 
-            return (
-              <Link
-                key={idx}
-                className={styles.chatList}
-                to={`/chat/${room.title}`}
-              >
-                <Chat
-                  title={room.title}
-                  selected={room.title === roomId}
-                  lastMessage={lastMessage}
-                  roomDelete={handleDeleteRoom}
-                />
-              </Link>
-            );
-          })}
-        </List>
-      </div>
-    </div>
+      <List component="nav">
+        {conversations.map((chat) => {
+          const messagesChat = allMessages[chat.id];
+          const lastMessage = messagesChat
+            ? messagesChat[messagesChat.length - 1]
+            : "";
+          return (
+            <Chat
+              key={chat.id}
+              chat={chat}
+              lastMessage={lastMessage}
+              selected={chat.id === chatId}
+            />
+          );
+        })}
+      </List>
+    </>
   );
-});
+};

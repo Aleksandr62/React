@@ -1,5 +1,5 @@
 {
-  "name": "les-5",
+  "name": "les-8-firebase-home",
   "version": "1.0.0",
   "description": "",
   "keywords": [],
@@ -7,14 +7,17 @@
   "dependencies": {
     "@material-ui/core": "4.12.3",
     "@material-ui/icons": "4.11.2",
-    "@material-ui/pickers": "3.3.10",
+    "@reduxjs/toolkit": "1.6.1",
     "classnames": "2.3.1",
+    "firebase": "9.0.0",
+    "nanoid": "3.1.25",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-redux": "7.2.4",
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.0",
-    "redux": "4.1.1"
+    "redux": "4.1.1",
+    "redux-persist": "6.0.0"
   },
   "devDependencies": {
     "@babel/runtime": "7.13.8",

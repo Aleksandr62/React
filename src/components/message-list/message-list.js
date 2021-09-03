@@ -1,58 +1,65 @@
-import { useDispatch, useSelector } from "react-redux";
-import { Input, InputAdornment } from "@material-ui/core";
+import { Input, List } from "@material-ui/core";
 import { Send } from "@material-ui/icons";
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { sendMessage } from "../../store/messages/actions";
-import { updateValueConversation } from "../../store/conversations/actions";
+import { messageAdded, selectAllMessagesByChat } from "../../store/messages";
 import { Message } from "./message";
 import styles from "./message-list.module.css";
 
 export const MessageList = () => {
-  const { roomId } = useParams();
+  const { chatId } = useParams();
+  const { user } = useSelector((state) => state.user);
 
-  const value = useSelector(
-    (state) =>
-      state.conversations.conversations.find((room) => (room.title = roomId))
-        ?.value
-  );
-  const messages = useSelector(
-    (state) => state.messages.messages[roomId] || []
-  );
-  const user = useSelector((state) => state.profile.user);
+  const [val, setVal] = useState();
 
   const dispatch = useDispatch();
 
-  const handleChangeValue = ({ target }) => {
-    dispatch(updateValueConversation({ title: roomId, value: target.value }));
-  };
+  const messages = useSelector((state) =>
+    selectAllMessagesByChat(state, chatId)
+  );
 
-  const handleSendMessage = () => {
-    dispatch(sendMessage({ author: user.firstName, message: value }, roomId));
-  };
-
-  const handlePressEnter = ({ code }) => {
-    if (code.match("Enter") && value) handleSendMessage();
+  const handleClickSendMessage = () => {
+    const date = new Date();
+    dispatch(
+      messageAdded(
+        { id: date.getTime(), author: user.firstName, text: val },
+        chatId
+      )
+    );
+    setVal("");
   };
 
   return (
-    <div className={styles.messageBox}>
-      <div className={styles.messages}>
-        {messages.map((message, index) => {
-          return <Message key={index} message={message} />;
-        })}
-      </div>
-      <Input
-        value={value}
-        onChange={handleChangeValue}
-        onKeyPress={handlePressEnter}
-        fullWidth={true}
-        placeholder="Введите сообщение..."
-        endAdornment={
-          <InputAdornment className={styles.sendButton} position="end">
-            {value && <Send onClick={handleSendMessage} />}
-          </InputAdornment>
-        }
-      />
-    </div>
+    <List className={styles.messageBox}>
+      {messages ? (
+        <>
+          <div>
+            {messages &&
+              messages.map((message, idx) => {
+                return <Message key={idx} message={message} />;
+              })}
+          </div>
+          <Input
+            fullWidth
+            autoFocus
+            value={val}
+            onChange={(e) => setVal(e.target.value)}
+            endAdornment={
+              val && (
+                <Send
+                  className={styles.sendButton}
+                  onClick={handleClickSendMessage}
+                />
+              )
+            }
+          />
+        </>
+      ) : (
+        <div className={styles.chatInfo}>
+          <h2>Выберите чат</h2>
+        </div>
+      )}
+    </List>
   );
 };
