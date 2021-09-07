@@ -7,11 +7,11 @@ const menuList = [
   { id: 2, title: "Chat", path: "/chat" },
   { id: 3, title: "Profile", path: "/profile" },
   { id: 4, title: "Artic", path: "/artic" },
-  { id: 5, title: "Login", path: "/login" },
+  { id: 5, title: "Login", path: "/login" }
 ];
 
 export const Menu = () => {
-  const { email } = useSelector((state) => state.user.user);
+  /*   const { email } = useSelector((state) => state.user.user); */
   const handleClickMenuItem = () => {};
 
   return (

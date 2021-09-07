@@ -17,9 +17,9 @@ export const ProfileCard = () => {
     dispatch(profileUpdated({ firstName }));
   };
 
-  useEffect(() => {
+  /*   useEffect(() => {
     updateProfileApp(firstName);
-  });
+  }); */
 
   return (
     <div className={styles.profile}>
