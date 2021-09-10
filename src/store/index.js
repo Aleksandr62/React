@@ -1,28 +1,28 @@
 import {
   configureStore,
   combineReducers,
-  getDefaultMiddleware,
+  getDefaultMiddleware
 } from "@reduxjs/toolkit";
 import { conversationsSlice } from "./conversations";
 import {
   logger,
   conversattionsMiddleware,
-  messagesMiddleware,
+  messagesMiddleware
 } from "./middlewares";
 import { messagesSlice } from "./messages";
 import { profileSlice } from "./profile";
 
-const combinedReducer = combineReducers({
+export const combinedReducer = combineReducers({
   conversations: conversationsSlice.reducer,
   messages: messagesSlice.reducer,
-  user: profileSlice.reducer,
+  user: profileSlice.reducer
 });
 
 export const store = configureStore({
   reducer: combinedReducer,
   middleware: [
     conversattionsMiddleware,
-    messagesMiddleware,
+    messagesMiddleware
     /*     ...getDefaultMiddleware(), */
-  ],
+  ]
 });

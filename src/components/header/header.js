@@ -3,12 +3,11 @@ import { useHistory } from "react-router-dom";
 import { IconButton } from "@material-ui/core";
 import { ExitToApp } from "@material-ui/icons";
 import { Menu } from "../menu";
-import { selectProfile } from "../../store/profile";
 import { signOutApp } from "../../api";
 import styles from "./header.module.css";
 
 export const Header = () => {
-  const { user } = useSelector(selectProfile);
+  const { user } = useSelector((state) => state.user);
 
   const history = useHistory();
 
